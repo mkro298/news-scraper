@@ -1,34 +1,16 @@
 import { Manifest } from "deno-slack-sdk/mod.ts";
-import { CreateScheduleWorkflow } from "./workflows/create_schedule.ts";
-import { DeleteScheduleWorkflow } from "./workflows/delete_schedule.ts";
-import { UpdateTopicWorkflow } from "./workflows/update_topic.ts";
-import { ScheduledUpdateTopicWorkflow } from "./workflows/scheduled_update_topic.ts";
-import { ReplyToMessageWorkflow } from "./workflows/reply_to_message.ts";
 
+/**
+ * The app manifest contains the app's configuration. This
+ * file defines attributes like app name and description.
+ * https://api.slack.com/automation/manifest
+ */
 export default Manifest({
   name: "my-app",
-  description: "A starter template.",
-  icon: "assets/icon.jpg",
-  workflows: [
-    UpdateTopicWorkflow,
-    ScheduledUpdateTopicWorkflow,
-    CreateScheduleWorkflow,
-    DeleteScheduleWorkflow,
-    ReplyToMessageWorkflow,
-  ],
+  description: "A blank template for building Slack apps with Deno",
+  icon: "assets/default_new_app_icon.png",
+  functions: [],
+  workflows: [],
   outgoingDomains: [],
-  botScopes: [
-    "commands",
-    "channels:join",
-    "channels:manage",
-    "channels:history",
-    "groups:write",
-    "im:write",
-    "im:history",
-    "mpim:write",
-    "chat:write",
-    "chat:write.public",
-    "triggers:write",
-    "triggers:read",
-  ],
+  botScopes: ["commands", "chat:write", "chat:write.public"],
 });

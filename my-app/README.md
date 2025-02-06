@@ -1,20 +1,12 @@
-### ⚠️ This sample has been archived and is no longer maintained.
+# Blank Template
 
----
-
-# Daily Channel Topic
-
-This automation features scheduling updates of channel topics and replies to
-user messages in thread. Event triggers can be dynamically created to allow it
-to work with new channels.
+This is a blank template used to build out automations using the Slack CLI.
 
 **Guide Outline**:
 
-- [Included Workflows](#included-workflows)
 - [Setup](#setup)
   - [Install the Slack CLI](#install-the-slack-cli)
   - [Clone the Template](#clone-the-template)
-  - [Trigger Configuration](#trigger-configuration)
 - [Running Your Project Locally](#running-your-project-locally)
 - [Creating Triggers](#creating-triggers)
 - [Datastores](#datastores)
@@ -25,17 +17,6 @@ to work with new channels.
 - [Resources](#resources)
 
 ---
-
-## Included Workflows
-
-- **Update Topic**: A manually triggered workflow to demonstrate updating a
-  channel's topic
-- **Scheduled Update Topic**: An automatically triggered workflow that updates a
-  channel's topic
-- **Create Schedule**: Set up a daily topic update for a channel
-- **Delete Schedule**: Remove a daily topic update for a channel
-- **Reply To Message**: A workflow that replies to the first message of a thread
-  in a new channel with the daily message
 
 ## Setup
 
@@ -56,16 +37,11 @@ Start by cloning this repository:
 
 ```zsh
 # Clone this project onto your machine
-$ slack create my-app -t slack-samples/deno-daily-channel-topic
+$ slack create my-app -t slack-samples/deno-blank-template
 
 # Change into the project directory
 $ cd my-app
 ```
-
-### Trigger Configuration
-
-Open `/triggers/message_posted_event.ts` and update the `channel_ids` value to
-be the channel ID of the channel you'd like your app to respond in.
 
 ## Running Your Project Locally
 
@@ -119,18 +95,12 @@ Interacting with this link will run the associated workflow.
 **Note: triggers won't run the workflow unless the app is either running locally
 or deployed!**
 
-### Dynamic Trigger Creation
-
-This sample allows you to create daily schedules for any channel in your
-workspace. After you've created each available trigger, run the "Create a
-schedule" workflow for any channels you'd like to see updated.
-
 ### Manual Trigger Creation
 
 To manually create a trigger, use the following command:
 
 ```zsh
-$ slack trigger create --trigger-def triggers/create_schedule_trigger.ts
+$ slack trigger create --trigger-def triggers/<YOUR_TRIGGER_FILE>.ts
 ```
 
 ## Datastores
@@ -141,9 +111,7 @@ infrastructure. The use of a datastore requires the
 
 ## Testing
 
-For an example of how to test a function, see
-`functions/sample_function_test.ts`. Test filenames should be suffixed with
-`_test`.
+Test filenames should be suffixed with `_test`.
 
 Run all tests with `deno test`:
 
