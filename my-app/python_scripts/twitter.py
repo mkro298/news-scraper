@@ -72,16 +72,55 @@ def google_search():
             links.append(news['link'])
 
 
-def website_scraper():
-    # need to find a way to generalize so that it can be used for any website rather 
-    # than needing to customize the find function for each site  
-    return None; 
+def website_scraper_penntoday():
+    url = "https://penntoday.upenn.edu/news/archives"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
 
+    # Find articles (adjust selector based on HTML structure)
+    articles = soup.find_all("article", class_="search-tease")
+
+    for article in articles:
+        # Extract link
+        link_tag = article.find("a", class_="search-tease__link")
+        link = "https://penntoday.upenn.edu" + link_tag["href"] if link_tag else "No link"
+
+        # Extract blurb
+        blurb_tag = article.find("p", class_="search-tease__dek")
+        blurb = blurb_tag.get_text(strip=True) if blurb_tag else "No blurb"
+
+        # Store the extracted data
+        links.append(link)
+        blurbs.append(blurb)
+
+def website_scraper_admission():
+    # URL of the site to scrape
+    url = "https://admissions.upenn.edu/visit-connect/penn-perspectives/blog"
+    base_url = "https://admissions.upenn.edu/"
+
+    # Send a GET request
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    # Find blog articles
+    articles = soup.find_all("div", class_="blog-item")
+
+    for article in articles:
+        # Extract headline
+        title_tag = article.find("h2")
+        title = title_tag.get_text(strip=True)
+        blurbs.append(title)
+
+        # Extract link
+        link_tag = article.find("a", class_="blog-item__link")
+        link = base_url + link_tag["href"] 
+        links.append(link)
 
 def penn_site_scraper():
     twitter_scraper(); 
     google_search(); 
-    website_scraper(); 
+    website_scraper_penntoday(); 
+    website_scraper_admission(); 
 
 if __name__ == "__main__":
     output = {
