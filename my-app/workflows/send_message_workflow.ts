@@ -15,20 +15,25 @@ export const SendMessageWorkflow = DefineWorkflow({
     }
 });
 
-twitter().then(({ links, blurbs }) => {
-    for (let i = 0; i < links.length; i++) {
-        const sendArticleFunctionStep = SendMessageWorkflow.addStep(
-            SendMessageFunction, {
-                link: links[i],
-                blurb: blurbs[i],
-            }
-        );
+export async function triggerSendMessageWorkflow(channel_id: string) {
+    try {
+        const { links, blurbs } = await twitter();
 
-        SendMessageWorkflow.addStep(Schema.slack.functions.SendMessage, {
-            channel_id: SendMessageWorkflow.inputs.channel_id,
-            message: `${sendArticleFunctionStep.outputs.blurb} ${sendArticleFunctionStep.outputs.link}`,
-        });
+        for (let i = 0; i < links.length; i++) {
+            const sendArticleFunctionStep = SendMessageWorkflow.addStep(
+                SendMessageFunction,
+                {
+                    link: links[i],
+                    blurb: blurbs[i],
+                }
+            );
+
+            SendMessageWorkflow.addStep(Schema.slack.functions.SendMessage, {
+                channel_id,  // Pass dynamically
+                message: `${sendArticleFunctionStep.outputs.blurb} ${sendArticleFunctionStep.outputs.link}`,
+            });
+        }
+    } catch (error) {
+        console.error(`Error fetching Twitter data: ${error.message}`);
     }
-}).catch(error => {
-    console.error(`Error: ${error.message}`);
-});
+}

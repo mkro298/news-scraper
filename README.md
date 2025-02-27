@@ -9,4 +9,6 @@ Resources:
 https://github.com/slackapi/deno-slack-sdk
 workflows: https://api.slack.com/automation/workflows
 https://github.com/slack-samples/deno-hello-world/blob/main/workflows/greeting_workflow.ts
+triggers: https://api.slack.com/automation/triggers/scheduled
+
 
