@@ -1,6 +1,5 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
-import { SendMessageFunction } from "../functions/send_message";
-import { twitter } from "../scraping/twitter_scraping.ts";
+import { SendMessageFunction } from "../functions/send_message.ts";
 
 export const SendMessageWorkflow = DefineWorkflow({
     callback_id: "send_message_workflow",
@@ -8,32 +7,19 @@ export const SendMessageWorkflow = DefineWorkflow({
     input_parameters: {
         required: ["channel_id"],
         properties: {
-            channel_id: {
-                type: Schema.types.string, 
-            },
+            channel_id: ["C08BL7VHU2X"], 
         },
-    }
+    },
 });
 
-export async function triggerSendMessageWorkflow(channel_id: string) {
-    try {
-        const { links, blurbs } = await twitter();
+// Define workflow steps
+const sendArticleFunctionStep = SendMessageWorkflow.addStep(SendMessageFunction, {
+    channel_id: SendMessageWorkflow.inputs.channel_id,
+});
 
-        for (let i = 0; i < links.length; i++) {
-            const sendArticleFunctionStep = SendMessageWorkflow.addStep(
-                SendMessageFunction,
-                {
-                    link: links[i],
-                    blurb: blurbs[i],
-                }
-            );
+SendMessageWorkflow.addStep(Schema.slack.functions.SendMessage, {
+    channel_id: SendMessageWorkflow.inputs.channel_id,
+    message: `${sendArticleFunctionStep.outputs.blurb} ${sendArticleFunctionStep.outputs.link}`,
+});
 
-            SendMessageWorkflow.addStep(Schema.slack.functions.SendMessage, {
-                channel_id,  // Pass dynamically
-                message: `${sendArticleFunctionStep.outputs.blurb} ${sendArticleFunctionStep.outputs.link}`,
-            });
-        }
-    } catch (error) {
-        console.error(`Error fetching Twitter data: ${error.message}`);
-    }
-}
+export default SendMessageWorkflow;

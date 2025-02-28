@@ -1,7 +1,7 @@
 // triggers/daily_maintenance_job.ts
 import { Trigger } from "deno-slack-sdk/types.ts";
 import { TriggerTypes, TriggerContextData } from "deno-slack-api/mod.ts";
-import { SendMessageWorkflow } from "../workflows/send_message_workflow";
+import { SendMessageWorkflow } from "../workflows/send_message_workflow.ts";
 
 /**
  * A trigger that periodically starts the "maintenance-job" workflow.
@@ -11,7 +11,7 @@ const trigger: Trigger<typeof SendMessageWorkflow.definition> = {
   name: "Trigger a scheduled maintenance job",
   workflow: `#/workflows/${SendMessageWorkflow.definition.callback_id}`,
   inputs: {
-    channel: {
+    channel_id: {
         value: TriggerContextData.Shortcut.channel_id,
       },
     },

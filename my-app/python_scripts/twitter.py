@@ -123,6 +123,7 @@ def penn_site_scraper():
     website_scraper_admission(); 
 
 if __name__ == "__main__":
+    penn_site_scraper(); 
     output = {
         "links": links,
         "blurbs": blurbs
